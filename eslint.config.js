@@ -17,6 +17,7 @@ export default [
       'constructor-super': 'error',
       'react/jsx-uses-react': 'error',
       'react/jsx-uses-vars': 'error',
+      'react/prop-types': [0],
     },
   },
 ];

@@ -1,0 +1,43 @@
+.mainContainer {
+  height: 100%;
+  width: 100%;
+  background-color: #f0eee2;
+}
+
+.imageContainer {
+  height: 100%;
+  width: 100%;
+  background-image: url('../../assets/book.jpg');
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-top-left-radius: 5rem;
+  border-bottom-left-radius: 5rem;
+}
+
+.formContainer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.formWrapper {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.titleText {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 3rem;
+  font-weight: 600;
+  /* font-family: 'Poppins', sans-serif; */
+}
+
+.formCard {
+  width: calc(100% - 6rem);
+  background-color: #fcfbf6;
+  margin: 0 3rem 0 3rem;
+}
