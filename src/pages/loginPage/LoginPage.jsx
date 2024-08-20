@@ -18,8 +18,10 @@ const LoginPage = () => {
         <div className={styles.formContainer}>
           <div className={styles.formWrapper}>
             <Card className={styles.formCard}>
-              <img src={stackLogo} alt="" className={styles.stackLogo} />
-              <h1 className={styles.titleText}>Libra</h1>
+              <div className={styles.titleWrapper}>
+                <img src={stackLogo} alt="" className={styles.stackLogo} />
+                <p className={styles.titleText}>Libra</p>
+              </div>
               <h4 className={styles.subText}>Library Management System</h4>
               <Form
                 name="login"
