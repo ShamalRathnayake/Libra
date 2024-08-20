@@ -13,7 +13,7 @@ const LoginPage = () => {
 
   return (
     <Row className={styles.mainContainer}>
-      <Col sm={{ flex: '100%' }} md={{ flex: '40%' }}>
+      <Col span={24}>
         <div className={styles.formContainer}>
           <div className={styles.formWrapper}>
             <Card className={styles.formCard}>
@@ -62,9 +62,6 @@ const LoginPage = () => {
             </Card>
           </div>
         </div>
-      </Col>
-      <Col sm={{ flex: '0%' }} md={{ flex: '60%' }}>
-        <div className={styles.imageContainer}></div>
       </Col>
     </Row>
   );
