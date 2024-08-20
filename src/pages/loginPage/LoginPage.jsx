@@ -2,6 +2,7 @@ import { Button, Card, Col, Form, Input, Row } from 'antd';
 import React from 'react';
 import styles from './LoginPage.module.scss';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import stackLogo from '../../assets/stack.png';
 
 const LoginPage = () => {
   const onFinish = (values) => {
@@ -13,11 +14,13 @@ const LoginPage = () => {
 
   return (
     <Row className={styles.mainContainer}>
-      <Col span={24}>
+      <Col span={24} className={styles.mainOverlay}>
         <div className={styles.formContainer}>
           <div className={styles.formWrapper}>
             <Card className={styles.formCard}>
-              <h1 className={styles.titleText}>Welcome</h1>
+              <img src={stackLogo} alt="" className={styles.stackLogo} />
+              <h1 className={styles.titleText}>Libra</h1>
+              <h4 className={styles.subText}>Library Management System</h4>
               <Form
                 name="login"
                 initialValues={{
