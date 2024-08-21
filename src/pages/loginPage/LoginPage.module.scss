@@ -1,7 +1,7 @@
 .mainContainer {
   height: 100%;
   width: 100%;
-  background-image: url('https://images.pexels.com/photos/26443189/pexels-photo-26443189/free-photo-of-close-up-of-books-on-the-shelf.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+  background-image: url('../../assets/bg-books.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
@@ -64,6 +64,10 @@
   -webkit-backdrop-filter: blur(6.8px);
   border: 1px solid rgba(255, 255, 255, 0.28);
   text-align: center;
+}
+
+.inputWrapper {
+  width: 100%;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
