@@ -19,7 +19,7 @@ function App() {
           themeMode === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
       }}
     >
-      <Spin spinning={isLoading} fullscreen />
+      <Spin spinning={isLoading} fullscreen size="large" />
       <RouterProvider router={router} />
     </ConfigProvider>
   );

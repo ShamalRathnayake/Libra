@@ -9,10 +9,13 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('https://images.pexels.com/photos/1629236/pexels-photo-1629236.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+  /* background-image: url('https://images.pexels.com/photos/1629236/pexels-photo-1629236.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'); */
+  /* background-image: url('https://images.pexels.com/photos/207662/pexels-photo-207662.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'); */
+  background-image: url('../../assets/shelf.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
+  filter: brightness(30%);
 }
 
 .layoutContainer {
@@ -21,6 +24,7 @@
   left: 0;
   width: 100%;
   height: 100%;
+  color: #fff;
 }
 
 .bgTransparent {
@@ -37,14 +41,77 @@
   backdrop-filter: blur(4.8px);
   -webkit-backdrop-filter: blur(4.8px);
   border: 1px solid rgba(255, 255, 255, 0.28);
+  display: flex;
+  justify-content: space-between;
+  height: 8vh;
 }
 
 .layoutBody {
   width: 100%;
-  height: 100%;
+  height: 92vh;
   background: rgba(255, 255, 255, 0.02);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(4.8px);
   -webkit-backdrop-filter: blur(4.8px);
   border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
+.stackLogo {
+  height: 3rem;
+  margin-right: 0.5rem;
+}
+
+.logoutText {
+  text-align: center;
+  font-weight: 300;
+  color: rgb(255, 255, 255);
+  margin: 0;
+}
+
+.titleText {
+  text-align: center;
+  font-weight: 100;
+  color: rgb(255, 255, 255);
+  font-family: 'Satisfy', cursive;
+  font-size: 2rem;
+  margin: 0;
+  margin-left: 0.25rem;
+}
+
+.sidebar {
+  border-right: 1px solid rgba(255, 255, 255, 0.28);
+  padding-top: 2rem;
+
+  ul > li {
+    color: #fff !important;
+  }
+}
+
+.sideBarItem {
+  background-color: transparent !important;
+  padding: 2rem 1.5rem;
+
+  &:hover {
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background-color: #fff9f917 !important;
+  }
+
+  &.selectedSidebarItem {
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background-color: #fff9f917 !important;
+  }
+}
+
+.textWhite {
+  color: #fff !important;
+}
+
+.outletWrapper {
+  padding: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
 }

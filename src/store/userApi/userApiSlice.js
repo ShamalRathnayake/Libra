@@ -3,7 +3,7 @@ import envConfig from '../../config/env.config';
 
 export const userApiSlice = createApi({
   reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({ baseUrl: envConfig.apiBaseUrl }), // Replace with your API base URL
+  baseQuery: fetchBaseQuery({ baseUrl: envConfig.usersBaseUrl }), // Replace with your API base URL
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({

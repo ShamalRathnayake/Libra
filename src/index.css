@@ -6,3 +6,7 @@
 * {
   font-family: 'Poppins', sans-serif;
 }
+
+.ant-spin-dot-item {
+  color: #1677ff;
+}
