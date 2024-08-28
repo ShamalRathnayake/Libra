@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import RedirectRoute from '../core/redirectRoute/RedirectRoute';
 import LoginPage from '../pages/loginPage/LoginPage';
 import ProtectedRoute from '../core/protectedRoute/ProtectedRoute';
@@ -11,6 +11,10 @@ import Users from '../pages/users/Users';
 import Lending from '../pages/lending/Lending';
 
 const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Navigate to="/login" />,
+  },
   {
     path: '/admin',
     element: (

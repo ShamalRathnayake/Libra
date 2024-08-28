@@ -1,12 +1,37 @@
-import { Col, Image, Input, Pagination, Row, Space, Table } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  Button,
+  Col,
+  Image,
+  Input,
+  Pagination,
+  Row,
+  Space,
+  Table,
+  Tag,
+} from 'antd';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
+import {
+  useDeleteBookMutation,
   useGetBooksQuery,
   useSearchBooksQuery,
 } from '../../store/booksApi/booksApiSlice';
 import styles from './Books.module.scss';
+import CreateBook from '../../core/createBook/CreateBook';
+import { useDispatch } from 'react-redux';
+import { showNotification } from '../../store/notificationSlice/notificationSlice';
+import ConfirmationModal from '../../core/confirmationModal/ConfirmationModal';
+import { setLoading } from '../../store/settingsSlice/settingsSlice';
+import { useGetAuthorsQuery } from '../../store/authorApi/authorApiSlice';
 
 const Books = () => {
+  const dispatch = useDispatch();
   const [tableParams, setTableParams] = useState({
     pagination: {
       current: 1,
@@ -25,10 +50,6 @@ const Books = () => {
   );
 
   useEffect(() => {
-    console.log(
-      '🚀 ~ useEffect ~ booksData?.totalRecords:',
-      booksData?.totalRecords,
-    );
     setTableParams({
       pagination: {
         ...tableParams.pagination,
@@ -37,9 +58,19 @@ const Books = () => {
     });
   }, [booksData]);
 
+  const { data: authors = [] } = useGetAuthorsQuery();
+
+  const getAuthorName = (id) => {
+    const author = authors?.data?.find((author) => author.id === id);
+    return `${author?.firstName} ${author?.lastName}`;
+  };
+
   useEffect(() => {
     getBooksAgain();
   }, [tableParams.pagination?.current, tableParams.pagination?.pageSize]);
+
+  const [isCreateBookVisible, setIsCreateBookVisible] = useState(false);
+  const [editBook, setEditBook] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedTerm, setDebouncedTerm] = useState('');
@@ -50,6 +81,10 @@ const Books = () => {
     tableParams.pagination.current,
     tableParams.pagination.pageSize,
   );
+
+  const [deleteBook] = useDeleteBookMutation();
+  const [deleteModalActive, setDeleteModalActive] = useState(false);
+  const [deleteRecordId, setDeleteRecordId] = useState('');
 
   const handleSearch = (value) => {
     if (!value) getBooksAgain();
@@ -65,8 +100,6 @@ const Books = () => {
   };
 
   const handlePageChange = (page, size) => {
-    console.log('🚀 ~ handlePageChange ~ size:', size);
-    console.log('🚀 ~ handlePageChange ~ page:', page);
     setTableParams({
       pagination: {
         ...tableParams.pagination,
@@ -74,6 +107,49 @@ const Books = () => {
         pageSize: size,
       },
     });
+  };
+
+  const handleEdit = (record) => {
+    setIsCreateBookVisible(true);
+    setEditBook(record);
+  };
+
+  const handleDelete = async (id) => {
+    setDeleteModalActive(true);
+    setDeleteRecordId(id);
+  };
+
+  const handleCreateBookClose = async () => {
+    setIsCreateBookVisible(false);
+    setEditBook(null);
+  };
+
+  const deleteBookProcess = async () => {
+    try {
+      dispatch(setLoading(true));
+      await deleteBook(deleteRecordId).unwrap();
+
+      dispatch(
+        showNotification({
+          type: 'success',
+          message: 'Book deleted successfully',
+          description: '',
+        }),
+      );
+    } catch (error) {
+      console.log('🚀 ~ deleteBook ~ error:', error);
+      dispatch(
+        showNotification({
+          type: 'error',
+          message: 'Deleting book failed',
+          description: '',
+        }),
+      );
+    } finally {
+      setDeleteRecordId('');
+      setDeleteModalActive(false);
+      dispatch(setLoading(false));
+    }
   };
 
   const columns = [
@@ -91,44 +167,97 @@ const Books = () => {
     },
     {
       title: 'Author',
-      dataIndex: 'author',
+      dataIndex: 'authorId',
       key: 'author',
-      sorter: (a, b) => a.author.localeCompare(b.author),
+      sorter: (a, b) => a.authorId.localeCompare(b.authorId),
+      render: (authorId) => getAuthorName(authorId),
     },
     {
-      title: 'Category',
+      title: 'Publisher',
+      dataIndex: 'publisher',
+      key: 'publisher',
+      sorter: (a, b) => a.publisher.localeCompare(b.publisher),
+    },
+    {
+      title: 'ISBN',
+      dataIndex: 'isbn',
+      key: 'isbn',
+      sorter: (a, b) => a.isbn.localeCompare(b.isbn),
+    },
+    {
+      title: 'Genre',
       dataIndex: 'genre',
-      key: 'category',
-      sorter: (a, b) => a.genre.localeCompare(b.genre),
+      key: 'genre',
+      sorter: (a, b) => a.genre.join(', ').localeCompare(b.genre.join(', ')),
+      render: (genre) => genre.join(', '),
     },
     {
-      title: 'Language',
-      dataIndex: 'language',
-      key: 'language',
-      sorter: (a, b) => a.language.localeCompare(b.language),
+      title: 'Publication Date',
+      dataIndex: 'publicationDate',
+      key: 'publicationDate',
+      sorter: (a, b) =>
+        new Date(a.publicationDate) - new Date(b.publicationDate),
+      render: (date) => new Date(date).getFullYear(),
     },
     {
       title: 'Copies Available',
-      dataIndex: 'availableCopies',
+      dataIndex: 'copiesAvailable',
       key: 'copiesAvailable',
-      sorter: (a, b) => a.availableCopies - b.availableCopies,
+      sorter: (a, b) => a.copiesAvailable - b.copiesAvailable,
     },
     {
       title: 'Status',
-      dataIndex: 'status',
+      dataIndex: 'copiesAvailable',
       key: 'status',
-      sorter: (a, b) => a.status.localeCompare(b.status),
+      sorter: (a, b) => a.copiesAvailable - b.copiesAvailable,
+      render: (copiesAvailable) => {
+        if (copiesAvailable > 0) {
+          return (
+            <Tag icon={<CheckCircleOutlined />} color="success">
+              Available
+            </Tag>
+          );
+        } else {
+          return (
+            <Tag icon={<CloseCircleOutlined />} color="error">
+              Checked Out
+            </Tag>
+          );
+        }
+      },
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => (
+        <Space size="small" direction="vertical">
+          <Button
+            icon={<EditOutlined />}
+            onClick={() => handleEdit(record)}
+            type="primary"
+            size="small"
+            ghost
+            style={{
+              width: '100%',
+            }}
+          >
+            Edit
+          </Button>
+          <Button
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(record.id)}
+            danger
+            size="small"
+          >
+            Delete
+          </Button>
+        </Space>
+      ),
     },
   ];
 
   return (
-    <Space
-      direction="vertical"
-      size="middle"
-      style={{
-        display: 'flex',
-      }}
-    >
+    <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
       <Row>
         <Col span={18}>
           <h1>Books</h1>
@@ -143,11 +272,23 @@ const Books = () => {
           />
         </Col>
       </Row>
-
+      <ConfirmationModal
+        title={'Delete'}
+        content={'Are you sure to delete?'}
+        confirmText={'Yes'}
+        handleCancel={() => setDeleteModalActive(false)}
+        handleConfirm={deleteBookProcess}
+        isModelActive={deleteModalActive}
+        type={'danger'}
+      />
       <Row>
         <Col span={24}>
           <div className={styles.tableWrapper}>
-            <Space direction="vertical" size={'middle'}>
+            <Space
+              direction="vertical"
+              size={'middle'}
+              className={styles.usersTableWrapper}
+            >
               <Table
                 columns={columns}
                 dataSource={searchTerm ? searchResults?.data : booksData?.data}
@@ -155,7 +296,6 @@ const Books = () => {
                   searchTerm ? searchLoading : booksLoading || booksFetching
                 }
                 rowKey="id"
-                /* onChange={handleTableChange} */
                 pagination={false}
               />
               <div className={styles.paginationWrapper}>
@@ -168,12 +308,31 @@ const Books = () => {
                   pageSize={tableParams.pagination.pageSize}
                   onChange={handlePageChange}
                   showSizeChanger={true}
+                  pageSizeOptions={[5, 10, 15, 20, 50, 100]}
                 />
               </div>
             </Space>
           </div>
         </Col>
       </Row>
+      <Button
+        type="primary"
+        shape="circle"
+        icon={<PlusOutlined />}
+        size="large"
+        style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          zIndex: 1000,
+        }}
+        onClick={() => setIsCreateBookVisible(true)}
+      />
+      <CreateBook
+        isVisible={isCreateBookVisible}
+        onClose={handleCreateBookClose}
+        initialBook={editBook}
+      />
     </Space>
   );
 };

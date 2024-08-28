@@ -54,8 +54,8 @@ const AdminDashboard = () => {
         <Col className="gutter-row" span={6}>
           <Card className={styles.statCard}>
             <Statistic
-              title="Users"
-              value={150}
+              title="Lendings"
+              value={85}
               formatter={getCounter}
               className={styles.textWhite}
             />

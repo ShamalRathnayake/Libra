@@ -10,3 +10,13 @@
 .ant-spin-dot-item {
   color: #1677ff;
 }
+
+.ant-modal-root {
+  z-index: 999 !important;
+}
+.ant-modal-mask {
+  z-index: 999 !important;
+}
+.ant-modal-wrap {
+  z-index: 999 !important;
+}
