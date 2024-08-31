@@ -24,6 +24,8 @@ const CreateUser = ({ isVisible, onClose, initialUser }) => {
           : null,
       };
       form.setFieldsValue(formValues);
+    } else {
+      form.resetFields();
     }
   }, [initialUser, form]);
 
@@ -34,6 +36,8 @@ const CreateUser = ({ isVisible, onClose, initialUser }) => {
         ? values.joinedDate.format('YYYY-MM-DD')
         : null,
     };
+
+    delete userData.confirmPassword;
 
     if (initialUser) {
       try {
@@ -94,7 +98,12 @@ const CreateUser = ({ isVisible, onClose, initialUser }) => {
       footer={null}
       maskClosable={false}
     >
-      <Form form={form} layout="vertical" onFinish={onFinish}>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
+        initialValues={{ password: '', confirmPassword: '' }} // Ensure password fields are empty
+      >
         <Form.Item
           name="firstName"
           label="First Name"
@@ -122,13 +131,36 @@ const CreateUser = ({ isVisible, onClose, initialUser }) => {
           <Input />
         </Form.Item>
 
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[{ required: true, message: 'Please enter the password' }]}
-        >
-          <Input.Password />
-        </Form.Item>
+        <>
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[{ required: true, message: 'Please enter the password' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            name="confirmPassword"
+            label="Confirm Password"
+            dependencies={['password']}
+            rules={[
+              { required: true, message: 'Please confirm your password' },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error('The two passwords do not match!'),
+                  );
+                },
+              }),
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+        </>
 
         <Form.Item
           name="phoneNumber"

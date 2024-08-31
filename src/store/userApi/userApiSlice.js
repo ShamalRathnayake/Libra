@@ -18,7 +18,7 @@ const userApiSlice = createApi({
     }),
     searchUsers: builder.query({
       query: (searchTerm, page = 1, limit = 10) =>
-        `/users/search?query=${searchTerm}&page=${page}&limit=${limit}`,
+        `/users/search?keyword=${searchTerm}&page=${page}&limit=${limit}`,
       providesTags: (result) =>
         result
           ? [
@@ -37,9 +37,9 @@ const userApiSlice = createApi({
     }),
     updateUser: builder.mutation({
       query: ({ id, ...updatedUser }) => ({
-        url: `/users/${id}`,
+        url: `/users`,
         method: 'PUT',
-        body: updatedUser,
+        body: { id, ...updatedUser },
       }),
       invalidatesTags: (result, error, { id }) => [
         { type: 'Users', id },
@@ -58,7 +58,7 @@ const userApiSlice = createApi({
     }),
     login: builder.mutation({
       query: (credentials) => ({
-        url: '/login',
+        url: '/users/login',
         method: 'POST',
         body: credentials,
       }),
