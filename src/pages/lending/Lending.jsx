@@ -52,7 +52,7 @@ const Lending = () => {
   };
 
   const getBookTitle = (id) => {
-    const book = books?.find((book) => book.id === id);
+    const book = books?.find((book) => book.bookId === id);
     return book?.title;
   };
 
