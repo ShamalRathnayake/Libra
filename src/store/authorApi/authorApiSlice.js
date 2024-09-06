@@ -36,8 +36,8 @@ export const authorsApiSlice = createApi({
       invalidatesTags: [{ type: 'Authors', id: 'LIST' }],
     }),
     updateAuthor: builder.mutation({
-      query: ({ id, ...updatedAuthor }) => ({
-        url: `/authors/${id}`,
+      query: (updatedAuthor) => ({
+        url: `/authors/${updatedAuthor.id}`,
         method: 'PUT',
         body: updatedAuthor,
       }),
