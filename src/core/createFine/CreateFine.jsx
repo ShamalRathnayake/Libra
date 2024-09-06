@@ -130,7 +130,11 @@ const CreateFine = ({ isVisible, onClose, initialFine }) => {
             }),
           ]}
         >
-          <DatePicker format="YYYY-MM-DD" style={{ width: '100%' }} />
+          <DatePicker
+            format="YYYY-MM-DD"
+            style={{ width: '100%' }}
+            allowClear={true}
+          />
         </Form.Item>
 
         <Form.Item>
