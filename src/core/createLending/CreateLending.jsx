@@ -150,7 +150,7 @@ const CreateLending = ({ isVisible, onClose, initialLending }) => {
         >
           <Select placeholder="Select a book">
             {booksData?.map((book) => (
-              <Select.Option key={book.id} value={book.id}>
+              <Select.Option key={book.bookId} value={book.bookId}>
                 {book.title}
               </Select.Option>
             ))}
