@@ -121,7 +121,7 @@ const CreateLending = ({ isVisible, onClose, initialLending }) => {
           rules={[{ required: true, message: 'Please select a book' }]}
         >
           <Select placeholder="Select a book">
-            {booksData?.data?.map((book) => (
+            {booksData?.map((book) => (
               <Select.Option key={book.id} value={book.id}>
                 {book.title}
               </Select.Option>

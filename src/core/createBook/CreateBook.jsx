@@ -151,7 +151,7 @@ const CreateBook = ({ isVisible, onClose, initialBook }) => {
             loading={isAuthorsLoading}
             disabled={isAuthorsLoading || authorsError}
           >
-            {authors?.data?.map((author) => (
+            {authors.map((author) => (
               <Select.Option key={author.id} value={author.id}>
                 {author.firstName + ' ' + author.lastName}
               </Select.Option>
