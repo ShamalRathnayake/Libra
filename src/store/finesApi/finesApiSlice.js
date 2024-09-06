@@ -30,8 +30,8 @@ export const finesApiSlice = createApi({
       invalidatesTags: [{ type: 'Fines', id: 'LIST' }],
     }),
     updateFine: builder.mutation({
-      query: ({ id, ...updatedFine }) => ({
-        url: `/fines/${id}`,
+      query: (updatedFine) => ({
+        url: `/fines`,
         method: 'PUT',
         body: updatedFine,
       }),
