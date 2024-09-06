@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Col, Input, Pagination, Row, Space, Table, Tag } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import {
   useDeleteFineMutation,
   useGetFinesQuery,
@@ -273,7 +273,7 @@ const Fines = () => {
           </div>
         </Col>
       </Row>
-      <Button
+      {/* <Button
         type="primary"
         shape="circle"
         icon={<PlusOutlined />}
@@ -285,7 +285,7 @@ const Fines = () => {
           zIndex: 1000,
         }}
         onClick={() => setIsCreateFineVisible(true)}
-      />
+      /> */}
       <CreateFine
         isVisible={isCreateFineVisible}
         onClose={handleCreateFineClose}
