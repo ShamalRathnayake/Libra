@@ -118,7 +118,16 @@ const CreateFine = ({ isVisible, onClose, initialFine }) => {
           name="paymentDate"
           label="Payment Date"
           rules={[
-            { required: true, message: 'Please select the payment date' },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (getFieldValue('paidStatus') && !value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error('Please select the payment date'),
+                );
+              },
+            }),
           ]}
         >
           <DatePicker format="YYYY-MM-DD" style={{ width: '100%' }} />
