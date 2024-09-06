@@ -120,12 +120,12 @@ const CreateFine = ({ isVisible, onClose, initialFine }) => {
           rules={[
             ({ getFieldValue }) => ({
               validator(_, value) {
-                if (getFieldValue('paidStatus') === true && !value) {
-                  return Promise.resolve();
+                if (getFieldValue('paidStatus') && !value) {
+                  return Promise.reject(
+                    new Error('Please select the payment date'),
+                  );
                 }
-                return Promise.reject(
-                  new Error('Please select the payment date'),
-                );
+                return Promise.resolve();
               },
             }),
           ]}
