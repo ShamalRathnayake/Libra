@@ -38,7 +38,7 @@ const CreateFine = ({ isVisible, onClose, initialFine }) => {
     if (initialFine) {
       try {
         dispatch(setLoading(true));
-        await updateFine({ id: initialFine.fineId, ...fineData }).unwrap();
+        await updateFine({ fineId: initialFine.fineId, ...fineData }).unwrap();
         dispatch(
           showNotification({
             type: 'success',
