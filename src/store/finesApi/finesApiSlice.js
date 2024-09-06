@@ -11,7 +11,7 @@ export const finesApiSlice = createApi({
       providesTags: (result) =>
         result
           ? [
-              result.map(({ id }) => ({ type: 'Fines', id })),
+              result.map(({ fineId }) => ({ type: 'Fines', id: fineId })),
               { type: 'Fines', id: 'LIST' },
             ]
           : [{ type: 'Fines', id: 'LIST' }],
@@ -19,7 +19,7 @@ export const finesApiSlice = createApi({
     getFineById: builder.query({
       query: (id) => `/fines/${id}`,
       providesTags: (result) =>
-        result ? [{ type: 'Fines', id: result.id }] : [],
+        result ? [{ type: 'Fines', id: result.fineId }] : [],
     }),
     createFine: builder.mutation({
       query: (newFine) => ({
@@ -56,7 +56,7 @@ export const finesApiSlice = createApi({
       providesTags: (result) =>
         result
           ? [
-              result.map(({ id }) => ({ type: 'Fines', id })),
+              result.map(({ fineId }) => ({ type: 'Fines', id: fineId })),
               { type: 'Fines', id: 'LIST' },
             ]
           : [{ type: 'Fines', id: 'LIST' }],
