@@ -11,7 +11,7 @@ export const authorsApiSlice = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'Authors', id })),
+              result.map(({ id }) => ({ type: 'Authors', id })),
               { type: 'Authors', id: 'LIST' },
             ]
           : [{ type: 'Authors', id: 'LIST' }],
@@ -22,7 +22,7 @@ export const authorsApiSlice = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'Authors', id })),
+              result.map(({ id }) => ({ type: 'Authors', id })),
               { type: 'Authors', id: 'LIST' },
             ]
           : [{ type: 'Authors', id: 'LIST' }],

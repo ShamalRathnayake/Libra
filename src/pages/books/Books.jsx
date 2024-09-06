@@ -229,30 +229,34 @@ const Books = () => {
     {
       title: 'Action',
       key: 'action',
-      render: (text, record) => (
-        <Space size="small" direction="vertical">
-          <Button
-            icon={<EditOutlined />}
-            onClick={() => handleEdit(record)}
-            type="primary"
-            size="small"
-            ghost
-            style={{
-              width: '100%',
-            }}
-          >
-            Edit
-          </Button>
-          <Button
-            icon={<DeleteOutlined />}
-            onClick={() => handleDelete(record.bookId)}
-            danger
-            size="small"
-          >
-            Delete
-          </Button>
-        </Space>
-      ),
+      render: (text, record) => {
+        console.log('🚀 ~ Books ~ record:', record);
+
+        return (
+          <Space size="small" direction="vertical">
+            <Button
+              icon={<EditOutlined />}
+              onClick={() => handleEdit(record)}
+              type="primary"
+              size="small"
+              ghost
+              style={{
+                width: '100%',
+              }}
+            >
+              Edit
+            </Button>
+            <Button
+              icon={<DeleteOutlined />}
+              onClick={() => handleDelete(record.bookId)}
+              danger
+              size="small"
+            >
+              Delete
+            </Button>
+          </Space>
+        );
+      },
     },
   ];
 
