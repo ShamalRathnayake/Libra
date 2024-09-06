@@ -37,7 +37,7 @@ export const authorsApiSlice = createApi({
     }),
     updateAuthor: builder.mutation({
       query: (updatedAuthor) => ({
-        url: `/authors}`,
+        url: `/authors`,
         method: 'PUT',
         body: updatedAuthor,
       }),
