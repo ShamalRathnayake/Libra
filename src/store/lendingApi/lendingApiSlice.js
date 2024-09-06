@@ -30,8 +30,8 @@ export const lendingApiSlice = createApi({
       invalidatesTags: [{ type: 'Lendings', id: 'LIST' }],
     }),
     updateLending: builder.mutation({
-      query: ({ id, ...updatedLending }) => ({
-        url: `/lendings/${id}`,
+      query: (updatedLending) => ({
+        url: `/lendings`,
         method: 'PUT',
         body: updatedLending,
       }),
