@@ -94,6 +94,10 @@ const LoginPage = () => {
                         message: 'Please enter your Password!',
                       },
                       {
+                        min: 8,
+                        message: 'Password should be at least 8 characters',
+                      },
+                      {
                         max: 30,
                         message: 'Max length allowed is 30 characters',
                       },

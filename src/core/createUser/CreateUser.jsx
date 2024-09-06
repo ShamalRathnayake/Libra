@@ -79,7 +79,7 @@ const CreateUser = ({ isVisible, onClose, initialUser }) => {
           showNotification({
             type: 'error',
             message: 'Creating user failed',
-            description: '',
+            description: error.message || '',
           }),
         );
       } finally {
@@ -135,7 +135,17 @@ const CreateUser = ({ isVisible, onClose, initialUser }) => {
           <Form.Item
             name="password"
             label="Password"
-            rules={[{ required: true, message: 'Please enter the password' }]}
+            rules={[
+              { required: true, message: 'Please enter the password' },
+              {
+                min: 8,
+                message: 'Password should be at least 8 characters',
+              },
+              {
+                max: 30,
+                message: 'Max length allowed is 30 characters',
+              },
+            ]}
           >
             <Input.Password />
           </Form.Item>
@@ -146,6 +156,14 @@ const CreateUser = ({ isVisible, onClose, initialUser }) => {
             dependencies={['password']}
             rules={[
               { required: true, message: 'Please confirm your password' },
+              {
+                min: 8,
+                message: 'Password should be at least 8 characters',
+              },
+              {
+                max: 30,
+                message: 'Max length allowed is 30 characters',
+              },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue('password') === value) {
