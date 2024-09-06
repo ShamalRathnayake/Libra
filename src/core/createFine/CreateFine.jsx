@@ -120,7 +120,7 @@ const CreateFine = ({ isVisible, onClose, initialFine }) => {
           rules={[
             ({ getFieldValue }) => ({
               validator(_, value) {
-                if (getFieldValue('paidStatus') && !value) {
+                if (getFieldValue('paidStatus') === true && !value) {
                   return Promise.resolve();
                 }
                 return Promise.reject(
