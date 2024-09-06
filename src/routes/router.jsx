@@ -9,6 +9,7 @@ import Books from '../pages/books/Books';
 import Authors from '../pages/authors/Authors';
 import Users from '../pages/users/Users';
 import Lending from '../pages/lending/Lending';
+import Fines from '../pages/fines/Fines';
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: 'lending',
         element: <Lending />,
+      },
+      {
+        path: 'fines',
+        element: <Fines />,
       },
     ],
   },

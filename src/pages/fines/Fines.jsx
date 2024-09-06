@@ -2,20 +2,20 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Col, Input, Pagination, Row, Space, Table, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import {
-  useDeleteLendingMutation,
-  useGetLendingsQuery,
-  useSearchLendingsQuery,
-} from '../../store/lendingApi/lendingApiSlice';
-import styles from './Lending.module.scss';
-import CreateLending from '../../core/createLending/CreateLending';
+  useDeleteFineMutation,
+  useGetFinesQuery,
+  useSearchFinesQuery,
+} from '../../store/finesApi/finesApiSlice';
+import styles from './Fines.module.scss';
 import { useDispatch } from 'react-redux';
 import { showNotification } from '../../store/notificationSlice/notificationSlice';
 import ConfirmationModal from '../../core/confirmationModal/ConfirmationModal';
 import { setLoading } from '../../store/settingsSlice/settingsSlice';
 import { useGetUsersQuery } from '../../store/userApi/userApiSlice';
 import { useGetBooksQuery } from '../../store/booksApi/booksApiSlice';
+import CreateFine from '../../core/createFine/CreateFine';
 
-const Lending = () => {
+const Fines = () => {
   const dispatch = useDispatch();
   const [tableParams, setTableParams] = useState({
     pagination: {
@@ -25,11 +25,11 @@ const Lending = () => {
   });
 
   const {
-    data: lendingsData,
-    isLoading: lendingsLoading,
-    isFetching: lendingsFetching,
-    refetch: getLendingsAgain,
-  } = useGetLendingsQuery(
+    data: finesData,
+    isLoading: finesLoading,
+    isFetching: finesFetching,
+    refetch: getFinesAgain,
+  } = useGetFinesQuery(
     tableParams.pagination.current,
     tableParams.pagination.pageSize,
   );
@@ -38,10 +38,10 @@ const Lending = () => {
     setTableParams({
       pagination: {
         ...tableParams.pagination,
-        total: lendingsData?.totalRecords || 0,
+        total: finesData?.totalRecords || 0,
       },
     });
-  }, [lendingsData]);
+  }, [finesData]);
 
   const { data: users = [] } = useGetUsersQuery();
   const { data: books = [] } = useGetBooksQuery();
@@ -57,29 +57,28 @@ const Lending = () => {
   };
 
   useEffect(() => {
-    getLendingsAgain();
+    getFinesAgain();
   }, [tableParams.pagination?.current, tableParams.pagination?.pageSize]);
 
-  const [isCreateLendingVisible, setIsCreateLendingVisible] = useState(false);
-  const [editLending, setEditLending] = useState(null);
+  const [isCreateFineVisible, setIsCreateFineVisible] = useState(false);
+  const [editFine, setEditFine] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedTerm, setDebouncedTerm] = useState('');
 
   const searchTimeoutRef = useRef(null);
-  const { data: searchResults, isLoading: searchLoading } =
-    useSearchLendingsQuery(
-      searchTerm,
-      tableParams.pagination.current,
-      tableParams.pagination.pageSize,
-    );
+  const { data: searchResults, isLoading: searchLoading } = useSearchFinesQuery(
+    searchTerm,
+    tableParams.pagination.current,
+    tableParams.pagination.pageSize,
+  );
 
-  const [deleteLending] = useDeleteLendingMutation();
+  const [deleteFine] = useDeleteFineMutation();
   const [deleteModalActive, setDeleteModalActive] = useState(false);
   const [deleteRecordId, setDeleteRecordId] = useState('');
 
   const handleSearch = (value) => {
-    if (!value) getLendingsAgain();
+    if (!value) getFinesAgain();
     setDebouncedTerm(value);
 
     if (searchTimeoutRef.current) {
@@ -102,8 +101,8 @@ const Lending = () => {
   };
 
   const handleEdit = (record) => {
-    setIsCreateLendingVisible(true);
-    setEditLending(record);
+    setIsCreateFineVisible(true);
+    setEditFine(record);
   };
 
   const handleDelete = async (id) => {
@@ -111,20 +110,20 @@ const Lending = () => {
     setDeleteRecordId(id);
   };
 
-  const handleCreateLendingClose = async () => {
-    setIsCreateLendingVisible(false);
-    setEditLending(null);
+  const handleCreateFineClose = async () => {
+    setIsCreateFineVisible(false);
+    setEditFine(null);
   };
 
-  const deleteLendingProcess = async () => {
+  const deleteFineProcess = async () => {
     try {
       dispatch(setLoading(true));
-      await deleteLending(deleteRecordId).unwrap();
+      await deleteFine(deleteRecordId).unwrap();
 
       dispatch(
         showNotification({
           type: 'success',
-          message: 'Lending record deleted successfully',
+          message: 'Fine record deleted successfully',
           description: '',
         }),
       );
@@ -133,7 +132,7 @@ const Lending = () => {
       dispatch(
         showNotification({
           type: 'error',
-          message: 'Deleting lending record failed',
+          message: 'Deleting fine record failed',
           description: '',
         }),
       );
@@ -144,65 +143,46 @@ const Lending = () => {
     }
   };
 
-  const getStatus = (dueDate, returnDate) => {
-    const today = new Date();
-    const due = new Date(dueDate);
-    const returned = returnDate ? new Date(returnDate) : null;
-
-    if (returned) {
-      return returned > due ? (
-        <Tag color="red">Returned Late</Tag>
-      ) : (
-        <Tag color="green">Returned On Time</Tag>
-      );
-    } else if (today > due) {
-      return <Tag color="red">Late</Tag>;
-    } else {
-      return <Tag color="blue">Not Returned</Tag>;
-    }
+  const getPaidStatus = (paidStatus) => {
+    return paidStatus ? (
+      <Tag color="green">Paid</Tag>
+    ) : (
+      <Tag color="red">Unpaid</Tag>
+    );
   };
 
   const columns = [
     {
       title: 'Book',
-      dataIndex: 'bookId',
+      dataIndex: 'lendId',
       key: 'book',
-      sorter: (a, b) => a.bookId.localeCompare(b.bookId),
       render: (bookId) => getBookTitle(bookId),
     },
     {
       title: 'User',
-      dataIndex: 'userId',
+      dataIndex: 'lendId',
       key: 'user',
-      sorter: (a, b) => a.userId.localeCompare(b.userId),
       render: (userId) => getUserName(userId),
     },
     {
-      title: 'Issue Date',
-      dataIndex: 'issueDate',
-      key: 'issueDate',
-      sorter: (a, b) => new Date(a.issueDate) - new Date(b.issueDate),
-      render: (date) => new Date(date).toLocaleDateString('en-GB'),
+      title: 'Fine Amount',
+      dataIndex: 'fineAmount',
+      key: 'fineAmount',
+      sorter: (a, b) => a.fineAmount - b.fineAmount,
     },
     {
-      title: 'Due Date',
-      dataIndex: 'dueDate',
-      key: 'dueDate',
-      sorter: (a, b) => new Date(a.dueDate) - new Date(b.dueDate),
-      render: (date) => new Date(date).toLocaleDateString('en-GB'),
+      title: 'Paid Status',
+      dataIndex: 'paidStatus',
+      key: 'paidStatus',
+      render: (paidStatus) => getPaidStatus(paidStatus),
     },
     {
-      title: 'Return Date',
-      dataIndex: 'returnDate',
-      key: 'returnDate',
-      sorter: (a, b) => new Date(a.returnDate) - new Date(b.returnDate),
+      title: 'Payment Date',
+      dataIndex: 'paymentDate',
+      key: 'paymentDate',
+      sorter: (a, b) => new Date(a.paymentDate) - new Date(b.paymentDate),
       render: (date) =>
-        date ? new Date(date).toLocaleDateString('en-GB') : 'Not Returned',
-    },
-    {
-      title: 'Status',
-      key: 'status',
-      render: (record) => getStatus(record.dueDate, record.returnDate),
+        date ? new Date(date).toLocaleDateString('en-GB') : 'Not Paid',
     },
     {
       title: 'Action',
@@ -223,7 +203,7 @@ const Lending = () => {
           </Button>
           <Button
             icon={<DeleteOutlined />}
-            onClick={() => handleDelete(record.lendId)}
+            onClick={() => handleDelete(record.fineId)}
             danger
             size="small"
           >
@@ -238,11 +218,11 @@ const Lending = () => {
     <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
       <Row>
         <Col span={18}>
-          <h1>Lending Records</h1>
+          <h1>Fine Records</h1>
         </Col>
         <Col span={6}>
           <Input
-            placeholder="Search lending records"
+            placeholder="Search fine records"
             enterButton="Search"
             size="large"
             value={debouncedTerm}
@@ -255,7 +235,7 @@ const Lending = () => {
         content={'Are you sure to delete?'}
         confirmText={'Yes'}
         handleCancel={() => setDeleteModalActive(false)}
-        handleConfirm={deleteLendingProcess}
+        handleConfirm={deleteFineProcess}
         isModelActive={deleteModalActive}
         type={'danger'}
       />
@@ -269,11 +249,9 @@ const Lending = () => {
             >
               <Table
                 columns={columns}
-                dataSource={searchTerm ? searchResults : lendingsData}
+                dataSource={searchTerm ? searchResults : finesData}
                 loading={
-                  searchTerm
-                    ? searchLoading
-                    : lendingsLoading || lendingsFetching
+                  searchTerm ? searchLoading : finesLoading || finesFetching
                 }
                 rowKey="id"
                 pagination={false}
@@ -306,15 +284,15 @@ const Lending = () => {
           right: '20px',
           zIndex: 1000,
         }}
-        onClick={() => setIsCreateLendingVisible(true)}
+        onClick={() => setIsCreateFineVisible(true)}
       />
-      <CreateLending
-        isVisible={isCreateLendingVisible}
-        onClose={handleCreateLendingClose}
-        initialLending={editLending}
+      <CreateFine
+        isVisible={isCreateFineVisible}
+        onClose={handleCreateFineClose}
+        initialFine={editFine}
       />
     </Space>
   );
 };
 
-export default Lending;
+export default Fines;

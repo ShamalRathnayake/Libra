@@ -6,6 +6,7 @@ import userApiSlice from './userApi/userApiSlice';
 import { booksApiSlice } from './booksApi/booksApiSlice';
 import { authorsApiSlice } from './authorApi/authorApiSlice';
 import { lendingApiSlice } from './lendingApi/lendingApiSlice';
+import { finesApiSlice } from './finesApi/finesApiSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     [booksApiSlice.reducerPath]: booksApiSlice.reducer,
     [authorsApiSlice.reducerPath]: authorsApiSlice.reducer,
     [lendingApiSlice.reducerPath]: lendingApiSlice.reducer,
+    [finesApiSlice.reducerPath]: finesApiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -23,5 +25,6 @@ export const store = configureStore({
       booksApiSlice.middleware,
       authorsApiSlice.middleware,
       lendingApiSlice.middleware,
+      finesApiSlice.middleware,
     ),
 });

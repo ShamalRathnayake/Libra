@@ -10,12 +10,14 @@ import { useGetUsersQuery } from '../../store/userApi/userApiSlice';
 import { useGetBooksQuery } from '../../store/booksApi/booksApiSlice';
 import { setLoading } from '../../store/settingsSlice/settingsSlice';
 import { showNotification } from '../../store/notificationSlice/notificationSlice';
+import { useCreateFineMutation } from '../../store/finesApi/finesApiSlice';
 
 const CreateLending = ({ isVisible, onClose, initialLending }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [createLending, { isLoading: isCreating }] = useCreateLendingMutation();
   const [updateLending, { isLoading: isUpdating }] = useUpdateLendingMutation();
+  const [createFine] = useCreateFineMutation();
 
   // Fetch users and books data
   const { data: usersData, isLoading: isLoadingUsers } = useGetUsersQuery();
@@ -23,6 +25,7 @@ const CreateLending = ({ isVisible, onClose, initialLending }) => {
 
   useEffect(() => {
     if (initialLending) {
+      console.log('🚀 ~ useEffect ~ initialLending:', initialLending);
       const formValues = {
         ...initialLending,
         issueDate: initialLending.issueDate
@@ -55,6 +58,31 @@ const CreateLending = ({ isVisible, onClose, initialLending }) => {
       try {
         dispatch(setLoading(true));
         await updateLending({ id: initialLending.id, ...lendingData }).unwrap();
+
+        if (lendingData.returnDate) {
+          console.log(
+            '🚀 ~ onFinish ~ lendingData.returnDate:',
+            lendingData.returnDate,
+          );
+
+          const dateDifference =
+            (new Date(lendingData.returnDate) - new Date(lendingData.dueDate)) /
+            (1000 * 60 * 60 * 24);
+          console.log('🚀 ~ onFinish ~ dateDifference:', dateDifference);
+
+          if (dateDifference > 1) {
+            const fine = 20 * dateDifference;
+
+            const finesObj = {
+              lendId: initialLending.id,
+              fineAmount: fine,
+              paidStatus: false,
+              paymentDate: null,
+            };
+
+            await createFine(finesObj).unwrap();
+          }
+        }
         dispatch(
           showNotification({
             type: 'success',

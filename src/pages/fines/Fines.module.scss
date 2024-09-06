@@ -1,0 +1,34 @@
+.tableWrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  padding: 0.5rem;
+
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.paginationWrapper {
+  color: #fff !important;
+  display: flex;
+  justify-content: end;
+
+  & svg {
+    color: #fff !important;
+  }
+
+  & li {
+    color: #fff !important;
+  }
+
+  & li:hover {
+    a {
+      background-color: #fff !important;
+      color: #0167ff !important;
+    }
+  }
+}
+
+.usersTableWrapper {
+  width: 100%;
+}

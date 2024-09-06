@@ -7,6 +7,7 @@ import stackLogo from '../../assets/stack.png';
 import cx from 'classnames';
 import {
   BookOutlined,
+  CreditCardOutlined,
   HomeOutlined,
   LogoutOutlined,
   SwapOutlined,
@@ -39,6 +40,8 @@ const AdminHome = () => {
       setSelectedSidebarItem('4');
     } else if (path.includes('/admin/lending')) {
       setSelectedSidebarItem('5');
+    } else if (path.includes('/admin/fines')) {
+      setSelectedSidebarItem('6');
     } else {
       setSelectedSidebarItem('1');
     }
@@ -97,6 +100,9 @@ const AdminHome = () => {
           break;
         case '5':
           navigate('/admin/lending');
+          break;
+        case '6':
+          navigate('/admin/fines');
           break;
 
         default:
@@ -215,6 +221,16 @@ const AdminHome = () => {
                   icon={<SwapOutlined />}
                 >
                   Lending
+                </Menu.Item>
+                <Menu.Item
+                  key="6"
+                  className={cx(
+                    styles.sideBarItem,
+                    selectedSidebarItem === '6' && styles.selectedSidebarItem,
+                  )}
+                  icon={<CreditCardOutlined />}
+                >
+                  Fines
                 </Menu.Item>
               </Menu>
             </Sider>
