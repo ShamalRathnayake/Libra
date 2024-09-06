@@ -245,7 +245,7 @@ const Books = () => {
           </Button>
           <Button
             icon={<DeleteOutlined />}
-            onClick={() => handleDelete(record.id)}
+            onClick={() => handleDelete(record.bookId)}
             danger
             size="small"
           >
