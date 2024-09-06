@@ -11,7 +11,7 @@ export const booksApiSlice = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.data.map(({ id }) => ({ type: 'Books', id })),
+              result.map(({ id }) => ({ type: 'Books', id })),
               { type: 'Books', id: 'LIST' },
             ]
           : [{ type: 'Books', id: 'LIST' }],
@@ -22,7 +22,7 @@ export const booksApiSlice = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.data.map(({ id }) => ({ type: 'Books', id })),
+              result.map(({ id }) => ({ type: 'Books', id })),
               { type: 'Books', id: 'LIST' },
             ]
           : [{ type: 'Books', id: 'LIST' }],

@@ -269,9 +269,7 @@ const Lending = () => {
             >
               <Table
                 columns={columns}
-                dataSource={
-                  searchTerm ? searchResults?.data : lendingsData?.data
-                }
+                dataSource={searchTerm ? searchResults : lendingsData}
                 loading={
                   searchTerm
                     ? searchLoading

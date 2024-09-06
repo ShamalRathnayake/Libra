@@ -11,7 +11,7 @@ export const lendingApiSlice = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.data.map(({ id }) => ({ type: 'Lendings', id })),
+              result.map(({ id }) => ({ type: 'Lendings', id })),
               { type: 'Lendings', id: 'LIST' },
             ]
           : [{ type: 'Lendings', id: 'LIST' }],
@@ -56,7 +56,7 @@ export const lendingApiSlice = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.data.map(({ id }) => ({ type: 'Lendings', id })),
+              ...result.map(({ id }) => ({ type: 'Lendings', id })),
               { type: 'Lendings', id: 'LIST' },
             ]
           : [{ type: 'Lendings', id: 'LIST' }],

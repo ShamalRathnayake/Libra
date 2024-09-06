@@ -291,7 +291,7 @@ const Books = () => {
             >
               <Table
                 columns={columns}
-                dataSource={searchTerm ? searchResults?.data : booksData?.data}
+                dataSource={searchTerm ? searchResults : booksData}
                 loading={
                   searchTerm ? searchLoading : booksLoading || booksFetching
                 }

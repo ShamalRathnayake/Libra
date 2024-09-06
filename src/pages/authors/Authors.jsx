@@ -209,9 +209,7 @@ const Authors = () => {
             >
               <Table
                 columns={columns}
-                dataSource={
-                  searchTerm ? searchResults?.data : authorsData?.data
-                }
+                dataSource={searchTerm ? searchResults : authorsData}
                 loading={
                   searchTerm ? searchLoading : authorsLoading || authorsFetching
                 }
