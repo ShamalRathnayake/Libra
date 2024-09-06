@@ -52,7 +52,7 @@ const CreateBook = ({ isVisible, onClose, initialBook }) => {
         publicationDate: initialBook.publicationDate
           ? moment(initialBook.publicationDate, 'YYYY-MM-DD')
           : null,
-        authorId: initialBook.authorId,
+        authorId: initialBook.id,
       };
       form.setFieldsValue(formValues);
       setGenres(initialBook.genre || []);
@@ -76,7 +76,7 @@ const CreateBook = ({ isVisible, onClose, initialBook }) => {
     if (initialBook) {
       try {
         dispatch(setLoading(true));
-        await updateBook({ id: initialBook.id, ...bookData }).unwrap();
+        await updateBook({ id: initialBook.bookId, ...bookData }).unwrap();
         dispatch(
           showNotification({
             type: 'success',
